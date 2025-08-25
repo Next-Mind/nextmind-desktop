@@ -1,3 +1,4 @@
+import 'package:desktop_nextmind/core/theme/app_colors.dart';
 import 'package:desktop_nextmind/ui/login/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.onPrimaryLight,
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -32,7 +33,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                         hintText: "Nome Completo",
                         prefixIcon: const Icon(Icons.person_outline),
                         filled: true,
-                        fillColor: Colors.grey.shade200,
+                        fillColor: AppColors.onErrorLight,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
@@ -47,7 +48,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                         hintText: "Data de Nascimento",
                         prefixIcon: const Icon(Icons.calendar_today_outlined),
                         filled: true,
-                        fillColor: Colors.grey.shade200,
+                        fillColor: AppColors.onErrorLight,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
@@ -62,7 +63,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                         hintText: "email@example.com",
                         prefixIcon: const Icon(Icons.email_outlined),
                         filled: true,
-                        fillColor: Colors.grey.shade200,
+                        fillColor: AppColors.onErrorLight,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
@@ -77,7 +78,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                         hintText: "Ex.: cl000000",
                         prefixIcon: const Icon(Icons.key_outlined),
                         filled: true,
-                        fillColor: Colors.grey.shade200,
+                        fillColor: AppColors.onErrorLight,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
@@ -105,7 +106,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                           },
                         ),
                         filled: true,
-                        fillColor: Colors.grey.shade200,
+                        fillColor: AppColors.onErrorLight,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
@@ -120,7 +121,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                       child: ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF3CA668),
+                          backgroundColor: AppColors.primaryLight,
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
@@ -130,8 +131,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                           "ENTRAR",
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: AppColors.onPrimaryLight,
                           ),
                         ),
                       ),
@@ -150,8 +150,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                           child: const Text(
                             "Entre aqui",
                             style: TextStyle(
-                              color: Color(0xFF3CA668),
-                              fontWeight: FontWeight.bold,
+                              color: AppColors.primaryLight,
                             ),
                           ),
                         ),

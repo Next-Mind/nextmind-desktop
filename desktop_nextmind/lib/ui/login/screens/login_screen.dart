@@ -1,3 +1,4 @@
+import 'package:desktop_nextmind/core/theme/app_colors.dart';
 import 'package:desktop_nextmind/ui/cadastro/screens/cadastro_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.onPrimaryLight,
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -46,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: "email@example.com",
                         prefixIcon: const Icon(Icons.email_outlined),
                         filled: true,
-                        fillColor: Colors.grey.shade200,
+                        fillColor: AppColors.onErrorLight,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
@@ -62,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: "Digite sua senha",
                         prefixIcon: const Icon(Icons.lock_outline),
                         filled: true,
-                        fillColor: Colors.grey.shade200,
+                        fillColor: AppColors.onErrorLight,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
@@ -85,22 +86,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                   isChecked = value!;
                                 });
                               },
-                              checkColor: Colors.white,
+                              checkColor: AppColors.onPrimaryLight,
                               fillColor: MaterialStateProperty.resolveWith<Color>(
                                 (states) {
                                   if (states.contains(MaterialState.selected)) {
-                                  return const Color(0xFF3CA668); // quando marcado
+                                  return AppColors.primaryLight; // quando marcado
                                 }
-                                return Colors.white; 
+                                return AppColors.onPrimaryLight; 
                                 },
                               ),
                             ),
-                            const Text("Mantenha Conectado", style: TextStyle(color: Color(0xFF3CA668)),),
+                            const Text("Mantenha Conectado", style: TextStyle(color: AppColors.primaryLight),),
                           ],
                         ),
                         TextButton(
                           onPressed: () {},
-                          child: const Text("Esqueceu a senha?", style: TextStyle(color: Color(0xFF3CA668)),),
+                          child: const Text("Esqueceu a senha?", style: TextStyle(color: AppColors.primaryLight),),
                         ),
                       ],
                     ),
@@ -113,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: ElevatedButton(  
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF3CA668),
+                          backgroundColor: AppColors.primaryLight,
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
@@ -121,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         child: const Text(
                           "ENTRAR",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                          style: TextStyle(fontSize: 16, color: AppColors.onPrimaryLight),
                         ),
                       ),
                     ),
@@ -136,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => CadastroScreen(),));
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF3CA668),
+                          backgroundColor: AppColors.primaryLight,
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
@@ -144,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         child: const Text(
                           "CRIAR CONTA",    
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                          style: TextStyle(fontSize: 16,color: AppColors.onPrimaryLight),
                         ),
                       ),
                     ),
