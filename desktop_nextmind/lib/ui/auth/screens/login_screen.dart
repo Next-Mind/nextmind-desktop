@@ -1,5 +1,4 @@
 import 'package:desktop_nextmind/core/theme/app_colors.dart';
-import 'package:desktop_nextmind/ui/cadastro/screens/cadastro_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -112,7 +111,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(  
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/home');
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryLight,
                           padding: const EdgeInsets.symmetric(vertical: 15),
@@ -134,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => CadastroScreen(),));
+                          Navigator.pushNamed(context, '/cadastro');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryLight,

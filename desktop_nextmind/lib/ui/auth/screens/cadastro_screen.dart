@@ -1,5 +1,4 @@
 import 'package:desktop_nextmind/core/theme/app_colors.dart';
-import 'package:desktop_nextmind/ui/login/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class CadastroScreen extends StatefulWidget {
@@ -145,7 +144,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                         const Text("Possui conta? "),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+                            Navigator.pushNamed(context, '/login');
                           },
                           child: const Text(
                             "Entre aqui",

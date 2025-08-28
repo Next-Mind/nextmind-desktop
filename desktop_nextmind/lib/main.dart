@@ -1,4 +1,4 @@
-import 'package:desktop_nextmind/ui/login/screens/login_screen.dart';
+import 'package:desktop_nextmind/core/utils/appRoutes.dart';
 import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/util.dart';
@@ -21,7 +21,8 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.light(textTheme),
       darkTheme: AppTheme.dark(textTheme),
       themeMode: brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark,
-      home: LoginScreen(),
+      initialRoute: AppRoutes.login,
+      routes: AppRoutes.routes,
     );
   }
 }
