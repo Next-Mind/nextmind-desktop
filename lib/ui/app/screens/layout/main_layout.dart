@@ -127,7 +127,14 @@ class _MenuItem extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (!selected) {
-          Navigator.pushReplacementNamed(context, route);
+          Navigator.of(context).pushReplacement(
+            PageRouteBuilder(
+              settings: RouteSettings(name: route), // mantém o nome da rota
+              pageBuilder: (context, _, __) => AppRoutes.routes[route]!(context),
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero,
+            ),
+          );
         }
       },
       child: Container(

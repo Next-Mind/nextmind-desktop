@@ -17,10 +17,11 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'NextMind Desktop',
       theme: AppTheme.light(textTheme),
       darkTheme: AppTheme.dark(textTheme),
-      themeMode: brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark,
+      // themeMode: brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark,
+      themeMode: ThemeMode.light,
       initialRoute: AppRoutes.login,
       routes: AppRoutes.routes,
     );

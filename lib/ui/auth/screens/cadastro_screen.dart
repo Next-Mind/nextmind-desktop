@@ -14,7 +14,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.onPrimaryLight,
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

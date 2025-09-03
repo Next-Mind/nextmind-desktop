@@ -14,7 +14,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.onPrimaryLight,
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: "email@example.com",
                         prefixIcon: const Icon(Icons.email_outlined),
                         filled: true,
-                        fillColor: AppColors.onErrorLight,
+                        fillColor: const Color.fromARGB(108, 234, 232, 232),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: "Digite sua senha",
                         prefixIcon: const Icon(Icons.lock_outline),
                         filled: true,
-                        fillColor: AppColors.onErrorLight,
+                        fillColor: const Color.fromARGB(108, 234, 232, 232),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
