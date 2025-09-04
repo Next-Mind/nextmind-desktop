@@ -5,8 +5,8 @@ import 'package:desktop_nextmind/ui/app/screens/layout/main_layout.dart';
 import 'package:desktop_nextmind/ui/app/screens/management_screen.dart';
 import 'package:desktop_nextmind/ui/app/screens/reported_screen.dart';
 import 'package:desktop_nextmind/ui/app/screens/support_screen.dart';
-import 'package:desktop_nextmind/ui/auth/sign_up/widgets/cadastro_screen.dart';
-import 'package:desktop_nextmind/ui/auth/sign_in/widgets/login_screen.dart';
+import 'package:desktop_nextmind/ui/auth/sign_in/login_screen.dart';
+import 'package:desktop_nextmind/ui/auth/sign_up/cadastro_screens.dart';
 import 'package:flutter/material.dart';
 
 class AppRoutes {
