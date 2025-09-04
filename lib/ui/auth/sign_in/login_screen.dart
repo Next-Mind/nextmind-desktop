@@ -1,4 +1,6 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
+// ignore_for_file: use_build_context_synchronously, avoid_print, deprecated_member_use
+
+import 'dart:convert';
 
 import 'package:desktop_nextmind/core/theme/app_colors.dart';
 import 'package:desktop_nextmind/core/utils/appRoutes.dart';
@@ -39,7 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString("token", token);
-          await prefs.setString("user", user.toString()); // ou salvar como JSON
+          await prefs.setString("user", jsonEncode(user));
+
 
           print("Usuário logado: ${user["name"]}, token: $token");
           Navigator.pushReplacementNamed(context, AppRoutes.home);

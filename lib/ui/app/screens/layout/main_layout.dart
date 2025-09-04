@@ -1,9 +1,46 @@
+// ignore_for_file: unnecessary_string_interpolations
+
 import 'package:desktop_nextmind/core/utils/appRoutes.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class MainLayout extends StatelessWidget {
+class MainLayout extends StatefulWidget {
   final Widget child;
   const MainLayout({super.key, required this.child});
+
+  @override
+  State<MainLayout> createState() => _MainLayoutState();
+}
+
+class _MainLayoutState extends State<MainLayout> {
+  String? userName;
+  String? photoUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+  final prefs = await SharedPreferences.getInstance();
+  final userString = prefs.getString("user");
+
+  if (userString != null) {
+    try {
+      final user = jsonDecode(userString);
+
+      setState(() {
+        userName = user["name"];
+        photoUrl = user["photo_url"];
+      });
+    } catch (e) {
+      debugPrint("Erro ao decodificar usuário: $e");
+    }
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +55,7 @@ class MainLayout extends StatelessWidget {
             color: Colors.white,
             child: Column(
               children: [
-                // Cabeçalho
+                // Cabeçalho usuário
                 Container(
                   padding: const EdgeInsets.all(12),
                   margin: const EdgeInsets.all(12),
@@ -27,12 +64,34 @@ class MainLayout extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      CircleAvatar(radius: 14, backgroundColor: Colors.grey),
-                      SizedBox(width: 8),
-                      Expanded(child: Text("Nickname")),
-                      Icon(Icons.arrow_drop_down),
+                    children: [
+                      CircleAvatar(
+                        radius: 14,
+                        backgroundColor: Colors.grey.shade300,
+                        child: ClipOval(
+                          child: photoUrl != null
+                              ? Image.network(
+                                  photoUrl!,
+                                  fit: BoxFit.cover,
+                                  width: 28,
+                                  height: 28,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Icon(Icons.person, size: 16, color: Colors.white);
+                                  },
+                                )
+                              : const Icon(Icons.person, size: 16, color: Colors.white),
+                        ),
+                      ),
+
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          userName ?? "Usuário",
+                          style: const TextStyle(fontSize: 14),
+                          overflow: TextOverflow.ellipsis, // evita quebrar layout
+                        ),
+                      ),
+                      const Icon(Icons.arrow_drop_down),
                     ],
                   ),
                 ),
@@ -100,7 +159,7 @@ class MainLayout extends StatelessWidget {
                 border: Border.all(color: Colors.grey.shade300),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: child,
+              child: widget.child,
             ),
           ),
         ],
