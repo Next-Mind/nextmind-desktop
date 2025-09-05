@@ -14,6 +14,7 @@ dependencies:
   google_fonts: any
   http: any
   shared_preferences: any
+  syncfusion_flutter_charts: any
 
 dev_dependencies:
   flutter_test:
