@@ -47,6 +47,7 @@ class _MainLayoutState extends State<MainLayout> {
     final currentRoute = ModalRoute.of(context)?.settings.name;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       body: Row(
         children: [
           // Sidebar
