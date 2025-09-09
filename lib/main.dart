@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:desktop_nextmind/core/utils/appRoutes.dart';
 import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
