@@ -15,6 +15,7 @@ dependencies:
   http: any
   shared_preferences: any
   syncfusion_flutter_charts: any
+  window_manager: any
 
 dev_dependencies:
   flutter_test:

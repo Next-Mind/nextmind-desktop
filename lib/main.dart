@@ -5,7 +5,28 @@ import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/util.dart';
 
-void main() {
+// import para gerenciar a janela no desktop
+import 'package:window_manager/window_manager.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Inicializa o gerenciador de janela (somente desktop)
+  await windowManager.ensureInitialized();
+
+  WindowOptions windowOptions = const WindowOptions(
+    size: Size(1000, 600),       // tamanho inicial da janela
+    minimumSize: Size(860, 560), // tamanho mínimo permitido
+    // maximumSize: Size(1600, 1200), // opcional: tamanho máximo
+    center: true,                // abre centralizada
+    backgroundColor: Colors.transparent,
+  );
+
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+  });
+
   runApp(const MyApp());
 }
 
