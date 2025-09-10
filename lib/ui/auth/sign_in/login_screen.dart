@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:desktop_nextmind/core/theme/app_colors.dart';
 import 'package:desktop_nextmind/core/utils/appRoutes.dart';
-import 'package:desktop_nextmind/data/models/user.dart';
+import 'package:desktop_nextmind/data/models/user_model.dart';
 import 'package:desktop_nextmind/ui/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,12 +35,10 @@ class _LoginScreenState extends State<LoginScreen> {
         );
 
         print("Resposta da API: $response");
-        
+
         if (response.containsKey("token")) {
           final token = response["token"];
-          final userData = response["data"];
-
-          final user = User.fromJson(userData);
+          final user = UserModel.fromJson(response["data"]); // usa o modelo
 
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString("token", token);
@@ -48,18 +46,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
           print("Usuário logado: ${user.name}, token: $token");
           Navigator.pushReplacementNamed(context, AppRoutes.home);
-        }
-        else {
+        } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Falha no login")),
           );
         }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Ocorreu um erro ao fazer login")),
+          const SnackBar(content: Text("Ocorreu um erro ao fazer login")),
         );
-      }
-    finally {
+      } finally {
         setState(() => _loading = false);
       }
     }

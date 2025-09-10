@@ -1,4 +1,4 @@
-class User {
+class UserModel {
   final String id;
   final String name;
   final String email;
@@ -8,7 +8,7 @@ class User {
   final DateTime? birthDate;
   final String photoUrl;
 
-  User({
+  UserModel({
     required this.id,
     required this.name,
     required this.email,
@@ -19,8 +19,8 @@ class User {
     required this.photoUrl,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
       id: json["id"] ?? "",
       name: json["name"] ?? "",
       email: json["email"] ?? "",
@@ -30,7 +30,9 @@ class User {
       birthDate: json["birth_date"] != null
           ? DateTime.tryParse(json["birth_date"])
           : null,
-      photoUrl: json["photo_url"] ?? "",
+      photoUrl: (json["photo_url"] != null && json["photo_url"].toString().isNotEmpty)
+          ? json["photo_url"]
+          : "https://via.placeholder.com/150", // fallback padrão
     );
   }
 

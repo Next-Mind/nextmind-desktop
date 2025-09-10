@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_string_interpolations
 
 import 'package:desktop_nextmind/core/utils/appRoutes.dart';
-import 'package:desktop_nextmind/data/models/user.dart';
+import 'package:desktop_nextmind/data/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,8 +15,7 @@ class MainLayout extends StatefulWidget {
 }
 
 class _MainLayoutState extends State<MainLayout> {
-  String? userName;
-  String? photoUrl;
+  UserModel? user;
 
   @override
   void initState() {
@@ -31,19 +30,14 @@ class _MainLayoutState extends State<MainLayout> {
     if (userString != null) {
       try {
         final userJson = jsonDecode(userString);
-        final user = User.fromJson(userJson);
-
         setState(() {
-          userName = user.name;
-          photoUrl = user.photoUrl;
+          user = UserModel.fromJson(userJson);
         });
       } catch (e) {
         debugPrint("Erro ao decodificar usuário: $e");
       }
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -71,19 +65,26 @@ class _MainLayoutState extends State<MainLayout> {
                     children: [
                       CircleAvatar(
                         radius: 14,
-                        backgroundImage: (photoUrl != null && photoUrl!.isNotEmpty)
-                            ? NetworkImage(photoUrl!)
-                            : null,
-                        child: (photoUrl == null || photoUrl!.isEmpty)
-                            ? const Icon(Icons.person, size: 16, color: Colors.white)
-                            : null,
+                        backgroundColor: Colors.grey.shade300,
+                        child: ClipOval(
+                          child: Image.network(
+                            user?.photoUrl ?? "https://via.placeholder.com/150",
+                            fit: BoxFit.cover,
+                            width: 28,
+                            height: 28,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.person,
+                                  size: 16, color: Colors.white);
+                            },
+                          ),
+                        ),
                       ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          userName ?? "Usuário",
+                          user?.name ?? "Usuário",
                           style: const TextStyle(fontSize: 14),
-                          overflow: TextOverflow.ellipsis, // evita quebrar layout
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       const Icon(Icons.arrow_drop_down),
@@ -183,8 +184,9 @@ class _MenuItem extends StatelessWidget {
         if (!selected) {
           Navigator.of(context).pushReplacement(
             PageRouteBuilder(
-              settings: RouteSettings(name: route), // mantém o nome da rota
-              pageBuilder: (context, _, __) => AppRoutes.routes[route]!(context),
+              settings: RouteSettings(name: route),
+              pageBuilder: (context, _, __) =>
+                  AppRoutes.routes[route]!(context),
               transitionDuration: Duration.zero,
               reverseTransitionDuration: Duration.zero,
             ),
