@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_string_interpolations
 
 import 'package:desktop_nextmind/core/utils/appRoutes.dart';
+import 'package:desktop_nextmind/data/models/user.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,22 +25,24 @@ class _MainLayoutState extends State<MainLayout> {
   }
 
   Future<void> _loadUserData() async {
-  final prefs = await SharedPreferences.getInstance();
-  final userString = prefs.getString("user");
+    final prefs = await SharedPreferences.getInstance();
+    final userString = prefs.getString("user");
 
-  if (userString != null) {
-    try {
-      final user = jsonDecode(userString);
+    if (userString != null) {
+      try {
+        final userJson = jsonDecode(userString);
+        final user = User.fromJson(userJson);
 
-      setState(() {
-        userName = user["name"];
-        photoUrl = user["photo_url"];
-      });
-    } catch (e) {
-      debugPrint("Erro ao decodificar usuário: $e");
+        setState(() {
+          userName = user.name;
+          photoUrl = user.photoUrl;
+        });
+      } catch (e) {
+        debugPrint("Erro ao decodificar usuário: $e");
+      }
     }
   }
-}
+
 
 
   @override
@@ -68,22 +71,13 @@ class _MainLayoutState extends State<MainLayout> {
                     children: [
                       CircleAvatar(
                         radius: 14,
-                        backgroundColor: Colors.grey.shade300,
-                        child: ClipOval(
-                          child: photoUrl != null
-                              ? Image.network(
-                                  photoUrl!,
-                                  fit: BoxFit.cover,
-                                  width: 28,
-                                  height: 28,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return const Icon(Icons.person, size: 16, color: Colors.white);
-                                  },
-                                )
-                              : const Icon(Icons.person, size: 16, color: Colors.white),
-                        ),
+                        backgroundImage: (photoUrl != null && photoUrl!.isNotEmpty)
+                            ? NetworkImage(photoUrl!)
+                            : null,
+                        child: (photoUrl == null || photoUrl!.isEmpty)
+                            ? const Icon(Icons.person, size: 16, color: Colors.white)
+                            : null,
                       ),
-
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
