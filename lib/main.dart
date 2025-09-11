@@ -4,8 +4,6 @@ import 'package:desktop_nextmind/core/utils/appRoutes.dart';
 import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/util.dart';
-
-// import para gerenciar a janela no desktop
 import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {

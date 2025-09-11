@@ -19,8 +19,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   int totalAlunos = 0;
   int totalPsicologos = 0;
-  int totalUsuarios = 0;
   int totalAdmins = 0;
+  int totalUsuarios = 0;
 
   @override
   void initState() {
@@ -31,10 +31,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Future<void> _fetchDashboardData() async {
     try {
       final results = await Future.wait([
-        _service.fetchCount("alunos/total"),
-        _service.fetchCount("psicologos/total"),
-        _service.fetchCount("admins/total"),
-        _service.fetchCount("chamados/total"),
+        _service.fetchCount("admin/count/students"),
+        _service.fetchCount("admin/count/psychologists"),
+        _service.fetchCount("admin/count/admins"),
+        _service.fetchCount("admin/count/all"),
       ]);
 
       setState(() {
@@ -81,9 +81,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   label: "Admins",
                 ),
                 InfoCard(
-                  icon: Icons.support_agent,
+                  icon: Icons.person,
                   value: totalUsuarios.toString(),
-                  label: "Chamados",
+                  label: "Usuarios",
                 ),
               ],
             ),
