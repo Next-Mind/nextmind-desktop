@@ -1,3 +1,8 @@
+// ignore_for_file: file_names
+
+import 'package:desktop_nextmind/data/models/user_model.dart';
+import 'package:desktop_nextmind/ui/app/screens/user_account_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:desktop_nextmind/ui/app/screens/dashboard_screen.dart';
 import 'package:desktop_nextmind/ui/app/screens/exportable_screen.dart';
 import 'package:desktop_nextmind/ui/app/screens/home_screen.dart';
@@ -7,7 +12,6 @@ import 'package:desktop_nextmind/ui/app/screens/reported_screen.dart';
 import 'package:desktop_nextmind/ui/app/screens/support_screen.dart';
 import 'package:desktop_nextmind/ui/auth/sign_in/login_screen.dart';
 import 'package:desktop_nextmind/ui/auth/sign_up/cadastro_screens.dart';
-import 'package:flutter/material.dart';
 
 class AppRoutes {
   static const String cadastro = '/cadastro';
@@ -18,6 +22,7 @@ class AppRoutes {
   static const String reported = '/reported';
   static const String support = '/support';
   static const String reports = '/reports';
+  static const String userAccount = '/userAccount';
 
   static Map<String, WidgetBuilder> routes = {
     cadastro: (context) => const CadastroScreen(),
@@ -28,5 +33,11 @@ class AppRoutes {
     reported: (context) => const MainLayout(child: ReportedScreen()),
     support: (context) => const MainLayout(child: SupportScreen()),
     reports: (context) => const MainLayout(child: ExportableScreen()),
+    userAccount: (context) {
+      final args =
+        ModalRoute.of(context)?.settings.arguments as UserModel;
+    return UserAccountScreen(user: args);
+  },
+
   };
 }

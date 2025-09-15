@@ -1,9 +1,9 @@
 // ignore_for_file: unnecessary_string_interpolations
 
+import 'dart:convert';
 import 'package:desktop_nextmind/core/utils/appRoutes.dart';
 import 'package:desktop_nextmind/data/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MainLayout extends StatefulWidget {
@@ -11,10 +11,10 @@ class MainLayout extends StatefulWidget {
   const MainLayout({super.key, required this.child});
 
   @override
-  State<MainLayout> createState() => _MainLayoutState();
+  State<MainLayout> createState() => MainLayoutState();
 }
 
-class _MainLayoutState extends State<MainLayout> {
+class MainLayoutState extends State<MainLayout> {
   UserModel? user;
 
   @override
@@ -25,13 +25,16 @@ class _MainLayoutState extends State<MainLayout> {
 
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
-    final userString = prefs.getString("user");
-
-    if (userString != null) {
+    final raw = prefs.getString("user");
+    if (raw != null) {
       try {
-        final userJson = jsonDecode(userString);
+        final decoded = jsonDecode(raw);
+        // se o JSON tiver o campo "data", extrai apenas ele
+        final data = decoded is Map && decoded.containsKey("data")
+            ? decoded["data"]
+            : decoded;
         setState(() {
-          user = UserModel.fromJson(userJson);
+          user = UserModel.fromJson(Map<String, dynamic>.from(data));
         });
       } catch (e) {
         debugPrint("Erro ao decodificar usuário: $e");
@@ -47,52 +50,61 @@ class _MainLayoutState extends State<MainLayout> {
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
       body: Row(
         children: [
-          // Sidebar
+          // ==== Sidebar ====
           Container(
             width: 220,
             color: Colors.white,
             child: Column(
               children: [
-                // Cabeçalho usuário
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  margin: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 14,
-                        backgroundColor: Colors.grey.shade300,
-                        child: ClipOval(
-                          child: Image.network(
-                            user?.photoUrl ?? "https://via.placeholder.com/150",
-                            fit: BoxFit.cover,
-                            width: 28,
-                            height: 28,
-                            errorBuilder: (context, error, stackTrace) {
-                              return const Icon(Icons.person,
-                                  size: 16, color: Colors.white);
-                            },
+                // Cabeçalho com foto e nome
+                MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRoutes.userAccount, arguments: user);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      margin: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade300),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 16,
+                            backgroundColor: Colors.grey.shade300,
+                            child: ClipOval(
+                              child: Image.network(
+                                user?.photoUrl ??
+                                    "https://via.placeholder.com/150",
+                                fit: BoxFit.cover,
+                                width: 32,
+                                height: 32,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(Icons.person,
+                                      size: 18, color: Colors.white);
+                                },
+                              ),
+                            ),
                           ),
-                        ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              user?.name ?? "Usuário",
+                              style: const TextStyle(fontSize: 14),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const Icon(Icons.arrow_drop_down),
+                        ],
                       ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          user?.name ?? "Usuário",
-                          style: const TextStyle(fontSize: 14),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      const Icon(Icons.arrow_drop_down),
-                    ],
+                    ),
                   ),
                 ),
 
-                // Itens do menu
+                // ==== Itens de menu ====
                 _MenuItem(
                   icon: Icons.home_outlined,
                   label: "Home",
@@ -132,7 +144,7 @@ class _MainLayoutState extends State<MainLayout> {
 
                 const Spacer(),
 
-                // Settings
+                // ==== Settings ====
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Row(
@@ -147,7 +159,7 @@ class _MainLayoutState extends State<MainLayout> {
             ),
           ),
 
-          // Conteúdo principal
+          // ==== Conteúdo principal ====
           Expanded(
             child: Container(
               margin: const EdgeInsets.all(12),
