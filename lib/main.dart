@@ -1,6 +1,5 @@
-// ignore_for_file: unused_local_variable
-
 import 'package:desktop_nextmind/core/utils/appRoutes.dart';
+import 'package:desktop_nextmind/ui/app/screens/settings/system_settings.dart';
 import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/util.dart';
@@ -9,14 +8,12 @@ import 'package:window_manager/window_manager.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Inicializa o gerenciador de janela (somente desktop)
   await windowManager.ensureInitialized();
 
   WindowOptions windowOptions = const WindowOptions(
-    size: Size(1000, 600),       // tamanho inicial da janela
-    minimumSize: Size(860, 560), // tamanho mínimo permitido
-    // maximumSize: Size(1600, 1200), // opcional: tamanho máximo
-    center: true,                // abre centralizada
+    size: Size(1000, 600),
+    minimumSize: Size(860, 560),
+    center: true,
     backgroundColor: Colors.transparent,
   );
 
@@ -28,12 +25,27 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  static _MyAppState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyAppState>();
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode themeMode = ThemeMode.light;
+
+  void toggleTheme(bool isDark) {
+    setState(() {
+      themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final brightness = View.of(context).platformDispatcher.platformBrightness;
     final textTheme = createTextTheme(context, "Roboto", "Inter");
 
     return MaterialApp(
@@ -41,10 +53,14 @@ class MyApp extends StatelessWidget {
       title: 'NextMind Desktop',
       theme: AppTheme.light(textTheme),
       darkTheme: AppTheme.dark(textTheme),
-      // themeMode: brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark,
-      themeMode: ThemeMode.light,
+      themeMode: themeMode,
       initialRoute: AppRoutes.login,
-      routes: AppRoutes.routes,
+      routes: {
+        ...AppRoutes.routes,
+        AppRoutes.systemSettings: (context) =>
+            SystemSettings(toggleTheme: toggleTheme),
+      },
     );
   }
 }
+  

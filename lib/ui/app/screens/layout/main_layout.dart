@@ -145,7 +145,11 @@ class MainLayoutState extends State<MainLayout> {
                 const Spacer(),
 
                 // ==== Settings ====
-                Padding(
+                MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.accountSettings, arguments: user),
+                    child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Row(
                     children: const [
@@ -155,6 +159,8 @@ class MainLayoutState extends State<MainLayout> {
                     ],
                   ),
                 ),
+                  ),
+                )
               ],
             ),
           ),

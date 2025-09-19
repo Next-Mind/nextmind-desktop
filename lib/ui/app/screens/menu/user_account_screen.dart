@@ -1,7 +1,7 @@
 import 'package:desktop_nextmind/ui/app/widgets/card_text.dart';
 import 'package:flutter/material.dart';
-import '../../../data/models/user_model.dart';
-import '../../../core/theme/app_colors.dart';
+import '../../../../data/models/user_model.dart';
+import '../../../../core/theme/app_colors.dart';
 import 'package:intl/intl.dart'; // Para formatar a data
 
 class UserAccountScreen extends StatelessWidget {
@@ -35,9 +35,6 @@ class UserAccountScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           "Minha Conta",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
         ),
         backgroundColor: AppColors.onErrorLight,
       ),

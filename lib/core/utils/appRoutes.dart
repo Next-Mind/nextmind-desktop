@@ -1,15 +1,21 @@
 // ignore_for_file: file_names
 
 import 'package:desktop_nextmind/data/models/user_model.dart';
-import 'package:desktop_nextmind/ui/app/screens/user_account_screen.dart';
+import 'package:desktop_nextmind/main.dart';
+import 'package:desktop_nextmind/ui/app/screens/layout/settings_layout.dart';
+import 'package:desktop_nextmind/ui/app/screens/menu/user_account_screen.dart';
+import 'package:desktop_nextmind/ui/app/screens/settings/account_settings.dart';
+import 'package:desktop_nextmind/ui/app/screens/settings/notification_settings.dart';
+import 'package:desktop_nextmind/ui/app/screens/settings/privacy_settings.dart';
+import 'package:desktop_nextmind/ui/app/screens/settings/system_settings.dart';
 import 'package:flutter/material.dart';
-import 'package:desktop_nextmind/ui/app/screens/dashboard_screen.dart';
-import 'package:desktop_nextmind/ui/app/screens/exportable_screen.dart';
-import 'package:desktop_nextmind/ui/app/screens/home_screen.dart';
+import 'package:desktop_nextmind/ui/app/screens/menu/dashboard_screen.dart';
+import 'package:desktop_nextmind/ui/app/screens/menu/exportable_screen.dart';
+import 'package:desktop_nextmind/ui/app/screens/menu/home_screen.dart';
 import 'package:desktop_nextmind/ui/app/screens/layout/main_layout.dart';
-import 'package:desktop_nextmind/ui/app/screens/management_screen.dart';
-import 'package:desktop_nextmind/ui/app/screens/reported_screen.dart';
-import 'package:desktop_nextmind/ui/app/screens/support_screen.dart';
+import 'package:desktop_nextmind/ui/app/screens/menu/management_screen.dart';
+import 'package:desktop_nextmind/ui/app/screens/menu/reported_screen.dart';
+import 'package:desktop_nextmind/ui/app/screens/menu/support_screen.dart';
 import 'package:desktop_nextmind/ui/auth/sign_in/login_screen.dart';
 import 'package:desktop_nextmind/ui/auth/sign_up/cadastro_screens.dart';
 
@@ -23,10 +29,17 @@ class AppRoutes {
   static const String support = '/support';
   static const String reports = '/reports';
   static const String userAccount = '/userAccount';
+  static const String settings = '/settings';
+  static const String accountSettings = '/accountSettings';
+  static const String notificationSettings = '/notificationSettings';
+  static const String privacySettings = '/privacySettings';
+  static const String systemSettings = '/systemSettings';
 
   static Map<String, WidgetBuilder> routes = {
     cadastro: (context) => const CadastroScreen(),
     login: (context) => const LoginScreen(),
+
+    // ====== ROTAS DO MENU ======
     home: (context) => const MainLayout(child: HomeScreen()),
     dashboard: (context) => const MainLayout(child: DashboardScreen()),
     management: (context) => const MainLayout(child: ManagementScreen()),
@@ -34,10 +47,27 @@ class AppRoutes {
     support: (context) => const MainLayout(child: SupportScreen()),
     reports: (context) => const MainLayout(child: ExportableScreen()),
     userAccount: (context) {
-      final args =
-        ModalRoute.of(context)?.settings.arguments as UserModel;
-    return UserAccountScreen(user: args);
-  },
+      final args = ModalRoute.of(context)?.settings.arguments as UserModel;
+      return UserAccountScreen(user: args);
+    },
 
+    // ====== ROTAS DE CONFIGURAÇÃO ======
+    accountSettings: (context) {
+      final user = ModalRoute.of(context)?.settings.arguments as UserModel?;
+      return SettingsLayout(child: AccountSettings(user: user));
+    },
+
+    notificationSettings: (context) =>
+        SettingsLayout(child: NotificationSettings()),
+    privacySettings: (context) => SettingsLayout(child: PrivacySettings()),
+    systemSettings: (context) {
+      final appState = MyApp.of(context);
+      return SettingsLayout(
+        child: SystemSettings(
+          toggleTheme: appState?.toggleTheme,
+          isDarkMode: appState?.themeMode == ThemeMode.dark,
+        ),
+      );
+    },
   };
 }
