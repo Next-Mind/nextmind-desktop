@@ -26,7 +26,7 @@ class _SettingsLayoutState extends State<SettingsLayout> {
           // ==== Sidebar das Configurações ====
           Container(
             width: 220,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onPrimary,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -112,17 +112,17 @@ class _SettingsMenuItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: selected ? Colors.teal.shade100 : Colors.transparent,
+          color: selected ? Theme.of(context).colorScheme.tertiary: Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
           children: [
-            Icon(icon, color: selected ? Colors.teal : Colors.black87),
+            Icon(icon, color: selected ? Theme.of(context).colorScheme.tertiaryContainer : Theme.of(context).colorScheme.scrim),
             const SizedBox(width: 12),
             Text(
               label,
               style: TextStyle(
-                color: selected ? Colors.teal : Colors.black87,
+                color: selected ? Theme.of(context).colorScheme.tertiaryContainer : Theme.of(context).colorScheme.scrim,
                 fontWeight: selected ? FontWeight.bold : FontWeight.normal,
               ),
             ),

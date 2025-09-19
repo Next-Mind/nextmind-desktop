@@ -53,7 +53,7 @@ class MainLayoutState extends State<MainLayout> {
           // ==== Sidebar ====
           Container(
             width: 220,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onPrimary,
             child: Column(
               children: [
                 // Cabeçalho com foto e nome
@@ -93,7 +93,7 @@ class MainLayoutState extends State<MainLayout> {
                           Expanded(
                             child: Text(
                               user?.name ?? "Usuário",
-                              style: const TextStyle(fontSize: 14),
+                              style: const TextStyle(fontSize: 14,),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -152,8 +152,8 @@ class MainLayoutState extends State<MainLayout> {
                     child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Row(
-                    children: const [
-                      Icon(Icons.settings, color: Colors.black87),
+                    children:  [
+                      Icon(Icons.settings, color: Theme.of(context).colorScheme.scrim),
                       SizedBox(width: 8),
                       Text("Settings"),
                     ],
@@ -215,17 +215,17 @@ class _MenuItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: selected ? Colors.teal.shade100 : Colors.transparent,
+          color: selected ? Theme.of(context).colorScheme.tertiary : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
           children: [
-            Icon(icon, color: selected ? Colors.teal : Colors.black87),
+            Icon(icon, color: selected ? Theme.of(context).colorScheme.tertiaryContainer : Theme.of(context).colorScheme.scrim,),
             const SizedBox(width: 12),
             Text(
               label,
               style: TextStyle(
-                color: selected ? Colors.teal : Colors.black87,
+                color: selected ? Theme.of(context).colorScheme.tertiaryContainer : Theme.of(context).colorScheme.scrim,
                 fontWeight: selected ? FontWeight.bold : FontWeight.normal,
               ),
             ),

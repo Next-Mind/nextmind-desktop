@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: "email@example.com",
                         prefixIcon: const Icon(Icons.email_outlined),
                         filled: true,
-                        fillColor: const Color.fromARGB(108, 234, 232, 232),
+                        fillColor: AppColors.onErrorLight,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: "Digite sua senha",
                         prefixIcon: const Icon(Icons.lock_outline),
                         filled: true,
-                        fillColor: const Color.fromARGB(108, 234, 232, 232),
+                        fillColor: AppColors.onErrorLight,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,

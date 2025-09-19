@@ -16,7 +16,7 @@ class SettingSection extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey.shade50,
+        color: Theme.of(context).colorScheme.onSecondaryContainer,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade300),
       ),

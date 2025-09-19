@@ -31,7 +31,7 @@ class UserAccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       appBar: AppBar(
         title: const Text(
           "Minha Conta",
@@ -48,7 +48,7 @@ class UserAccountScreen extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onSecondaryContainer,
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
@@ -110,7 +110,7 @@ class UserAccountScreen extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onSecondaryContainer,
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(

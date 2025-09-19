@@ -15,7 +15,7 @@ class CardText extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Card(
-        color: Colors.grey.shade100 ,
+        color: Theme.of(context).colorScheme.outline,
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         elevation: 3,
