@@ -31,6 +31,7 @@ class _SupportScreenState extends State<SupportScreen> {
             Container(
               width: 250,
               decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
                 border: Border(right: BorderSide(color: Colors.grey.shade300)),
               ),
               child: ListView.builder(
