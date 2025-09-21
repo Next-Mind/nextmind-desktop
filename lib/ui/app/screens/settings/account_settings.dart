@@ -1,11 +1,25 @@
+import 'package:desktop_nextmind/core/utils/appRoutes.dart';
 import 'package:desktop_nextmind/data/models/user_model.dart';
 import 'package:desktop_nextmind/ui/app/widgets/setting_section.dart';
 import 'package:desktop_nextmind/ui/app/widgets/setting_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountSettings extends StatelessWidget {
   final UserModel? user;
   const AccountSettings({super.key, this.user});
+
+  Future<void> _logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.remove("token");
+    await prefs.remove("user");
+
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      AppRoutes.login, 
+      (route) => false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +59,7 @@ class AccountSettings extends StatelessWidget {
                   title: "Sair da Conta",
                   trailing: const Icon(Icons.exit_to_app),
                   onTap: () {
-                    // ação de logout
+                    _logout(context);
                   },
                 ),
               ],

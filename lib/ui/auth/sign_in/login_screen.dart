@@ -163,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   if (states.contains(MaterialState.selected)) {
                                   return AppColors.primaryLight; // quando marcado
                                 }
-                                return AppColors.onPrimaryLight; 
+                                return AppColors.onErrorLight; 
                                 },
                               ),
                             ),
