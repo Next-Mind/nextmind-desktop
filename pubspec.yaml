@@ -17,6 +17,9 @@ dependencies:
   syncfusion_flutter_charts: any
   window_manager: any
   syncfusion_flutter_pdfviewer: any
+  fl_chart: 
+  file_picker: 
+  pdf: 
 
 dev_dependencies:
   flutter_test:
