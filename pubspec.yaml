@@ -16,6 +16,7 @@ dependencies:
   shared_preferences: any
   syncfusion_flutter_charts: any
   window_manager: any
+  syncfusion_flutter_pdfviewer: any
 
 dev_dependencies:
   flutter_test:
