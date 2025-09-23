@@ -40,15 +40,18 @@ class AppRoutes {
     login: (context) => const LoginScreen(),
 
     // ====== ROTAS DO MENU ======
-    home: (context) => const MainLayout(child: HomeScreen()),
+    home: (context) {
+      return MainLayout(child: HomeScreen(user: ModalRoute.of(context)?.settings.arguments as UserModel?,));
+    },
     dashboard: (context) => const MainLayout(child: DashboardScreen()),
     management: (context) => const MainLayout(child: ManagementScreen()),
     reported: (context) => const MainLayout(child: ReportedScreen()),
     support: (context) => const MainLayout(child: SupportScreen()),
     reports: (context) => const MainLayout(child: ExportableScreen()),
+
     userAccount: (context) {
-      final args = ModalRoute.of(context)?.settings.arguments as UserModel;
-      return UserAccountScreen(user: args);
+      final user = ModalRoute.of(context)?.settings.arguments as UserModel?;
+      return UserAccountScreen(user: user);
     },
 
     // ====== ROTAS DE CONFIGURAÇÃO ======
@@ -58,8 +61,11 @@ class AppRoutes {
     },
 
     notificationSettings: (context) =>
-        SettingsLayout(child: NotificationSettings()),
-    privacySettings: (context) => SettingsLayout(child: PrivacySettings()),
+        const SettingsLayout(child: NotificationSettings()),
+
+    privacySettings: (context) =>
+        const SettingsLayout(child: PrivacySettings()),
+
     systemSettings: (context) {
       final appState = MyApp.of(context);
       return SettingsLayout(

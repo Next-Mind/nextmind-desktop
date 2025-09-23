@@ -3,6 +3,8 @@
 import 'dart:convert';
 import 'package:desktop_nextmind/core/utils/appRoutes.dart';
 import 'package:desktop_nextmind/data/models/user_model.dart';
+import 'package:desktop_nextmind/ui/app/screens/menu/home_screen.dart';
+import 'package:desktop_nextmind/ui/app/widgets/menu_item.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,7 +31,6 @@ class MainLayoutState extends State<MainLayout> {
     if (raw != null) {
       try {
         final decoded = jsonDecode(raw);
-        // se o JSON tiver o campo "data", extrai apenas ele
         final data = decoded is Map && decoded.containsKey("data")
             ? decoded["data"]
             : decoded;
@@ -61,7 +62,11 @@ class MainLayoutState extends State<MainLayout> {
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.userAccount, arguments: user);
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.userAccount,
+                        arguments: user,
+                      );
                     },
                     child: Container(
                       padding: const EdgeInsets.all(12),
@@ -83,8 +88,11 @@ class MainLayoutState extends State<MainLayout> {
                                 width: 32,
                                 height: 32,
                                 errorBuilder: (context, error, stackTrace) {
-                                  return const Icon(Icons.person,
-                                      size: 18, color: Colors.white);
+                                  return const Icon(
+                                    Icons.person,
+                                    size: 18,
+                                    color: Colors.white,
+                                  );
                                 },
                               ),
                             ),
@@ -93,7 +101,7 @@ class MainLayoutState extends State<MainLayout> {
                           Expanded(
                             child: Text(
                               user?.name ?? "Usuário",
-                              style: const TextStyle(fontSize: 14,),
+                              style: const TextStyle(fontSize: 14),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -105,37 +113,38 @@ class MainLayoutState extends State<MainLayout> {
                 ),
 
                 // ==== Itens de menu ====
-                _MenuItem(
+                MenuItem(
                   icon: Icons.home_outlined,
                   label: "Home",
                   route: AppRoutes.home,
                   selected: currentRoute == AppRoutes.home,
+                  arguments: user,
                 ),
-                _MenuItem(
+                MenuItem(
                   icon: Icons.dashboard_outlined,
                   label: "Dashboard",
                   route: AppRoutes.dashboard,
                   selected: currentRoute == AppRoutes.dashboard,
                 ),
-                _MenuItem(
+                MenuItem(
                   icon: Icons.work_outline,
                   label: "Management",
                   route: AppRoutes.management,
                   selected: currentRoute == AppRoutes.management,
                 ),
-                _MenuItem(
+                MenuItem(
                   icon: Icons.flag_outlined,
                   label: "Reported",
                   route: AppRoutes.reported,
                   selected: currentRoute == AppRoutes.reported,
                 ),
-                _MenuItem(
+                MenuItem(
                   icon: Icons.support_agent_outlined,
                   label: "Support",
                   route: AppRoutes.support,
                   selected: currentRoute == AppRoutes.support,
                 ),
-                _MenuItem(
+                MenuItem(
                   icon: Icons.file_download_outlined,
                   label: "Reports",
                   route: AppRoutes.reports,
@@ -148,17 +157,22 @@ class MainLayoutState extends State<MainLayout> {
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, AppRoutes.accountSettings, arguments: user),
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      AppRoutes.accountSettings,
+                      arguments: user,
+                    ),
                     child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
-                    children:  [
-                      Icon(Icons.settings, color: Theme.of(context).colorScheme.scrim),
-                      SizedBox(width: 8),
-                      Text("Settings"),
-                    ],
-                  ),
-                ),
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        children: [
+                          Icon(Icons.settings,
+                              color: Theme.of(context).colorScheme.scrim),
+                          const SizedBox(width: 8),
+                          const Text("Settings"),
+                        ],
+                      ),
+                    ),
                   ),
                 )
               ],
@@ -173,64 +187,17 @@ class MainLayoutState extends State<MainLayout> {
                 border: Border.all(color: Colors.grey.shade300),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: widget.child,
+              child: Builder(
+                builder: (context) {
+                  if (widget.child is HomeScreen) {
+                    return HomeScreen(user: user);
+                  }
+                  return widget.child;
+                },
+              ),
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _MenuItem extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final String route;
-  final bool selected;
-
-  const _MenuItem({
-    required this.icon,
-    required this.label,
-    required this.route,
-    required this.selected,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        if (!selected) {
-          Navigator.of(context).pushReplacement(
-            PageRouteBuilder(
-              settings: RouteSettings(name: route),
-              pageBuilder: (context, _, __) =>
-                  AppRoutes.routes[route]!(context),
-              transitionDuration: Duration.zero,
-              reverseTransitionDuration: Duration.zero,
-            ),
-          );
-        }
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
-          color: selected ? Theme.of(context).colorScheme.tertiary : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          children: [
-            Icon(icon, color: selected ? Theme.of(context).colorScheme.tertiaryContainer : Theme.of(context).colorScheme.scrim,),
-            const SizedBox(width: 12),
-            Text(
-              label,
-              style: TextStyle(
-                color: selected ? Theme.of(context).colorScheme.tertiaryContainer : Theme.of(context).colorScheme.scrim,
-                fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

@@ -114,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    "Papel: Admin",
+                                    "Papel: ${widget.user?.roles ?? '[N/D]'}",
                                     style: theme.textTheme.bodyMedium?.copyWith(
                                       color: theme.colorScheme.onSurface
                                           .withOpacity(0.6),
