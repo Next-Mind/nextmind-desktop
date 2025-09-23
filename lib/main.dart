@@ -36,7 +36,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeMode themeMode = ThemeMode.light;
+  ThemeMode themeMode = ThemeMode.dark;
 
   void toggleTheme(bool isDark) {
     setState(() {
@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
       theme: AppTheme.light(textTheme),
       darkTheme: AppTheme.dark(textTheme),
       themeMode: themeMode,
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.splash,
       routes: {
         ...AppRoutes.routes,
         AppRoutes.systemSettings: (context) =>

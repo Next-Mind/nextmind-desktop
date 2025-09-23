@@ -8,6 +8,7 @@ import 'package:desktop_nextmind/ui/app/screens/settings/account_settings.dart';
 import 'package:desktop_nextmind/ui/app/screens/settings/notification_settings.dart';
 import 'package:desktop_nextmind/ui/app/screens/settings/privacy_settings.dart';
 import 'package:desktop_nextmind/ui/app/screens/settings/system_settings.dart';
+import 'package:desktop_nextmind/ui/auth/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:desktop_nextmind/ui/app/screens/menu/dashboard_screen.dart';
 import 'package:desktop_nextmind/ui/app/screens/menu/exportable_screen.dart';
@@ -20,6 +21,7 @@ import 'package:desktop_nextmind/ui/auth/sign_in/login_screen.dart';
 import 'package:desktop_nextmind/ui/auth/sign_up/cadastro_screens.dart';
 
 class AppRoutes {
+  static const String splash = '/splash';
   static const String cadastro = '/cadastro';
   static const String login = '/login';
   static const String home = '/home';
@@ -36,6 +38,7 @@ class AppRoutes {
   static const String systemSettings = '/systemSettings';
 
   static Map<String, WidgetBuilder> routes = {
+    splash: (context) => const SplashScreen(),
     cadastro: (context) => const CadastroScreen(),
     login: (context) => const LoginScreen(),
 
