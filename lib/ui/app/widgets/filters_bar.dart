@@ -1,3 +1,4 @@
+import 'package:desktop_nextmind/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class FiltersBar extends StatelessWidget {
@@ -42,10 +43,10 @@ class FiltersBar extends StatelessWidget {
         ),
         ElevatedButton.icon(
           onPressed: onExportPressed,
-          icon: const Icon(Icons.picture_as_pdf),
-          label: const Text("Exportar PDF"),
+          icon: Icon(Icons.picture_as_pdf, color: Theme.of(context).colorScheme.primaryFixed,),
+          label: Text("Exportar PDF", style: TextStyle(color: Theme.of(context).colorScheme.primaryFixed),),
           style: ElevatedButton.styleFrom(
-            backgroundColor: theme.colorScheme.secondaryFixedDim,
+            backgroundColor: AppColors.primaryLight,
           ),
         ),
       ],

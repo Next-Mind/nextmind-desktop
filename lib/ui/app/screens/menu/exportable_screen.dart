@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'dart:io';
 import 'package:desktop_nextmind/ui/app/widgets/filters_bar.dart';
 import 'package:desktop_nextmind/ui/app/widgets/stat_card.dart';
