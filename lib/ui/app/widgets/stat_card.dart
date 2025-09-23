@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class StatCard extends StatelessWidget{
-
+class StatCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final String value;
@@ -17,22 +16,38 @@ class StatCard extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Expanded(
-      child: Card(
-        elevation: 3,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Icon(icon, size: 28, color: color,),
-              SizedBox(height: 8,),
-              Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text(title, style: const TextStyle(color: Colors.grey))
-            ],
-          ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        decoration: BoxDecoration(
+          color: theme.cardColor,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
-      )
+        child: Column(
+          children: [
+            Icon(icon, size: 28, color: color),
+            const SizedBox(height: 8),
+            Text(
+              value,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(title, style: theme.textTheme.bodyMedium),
+          ],
+        ),
+      ),
     );
   }
 }
