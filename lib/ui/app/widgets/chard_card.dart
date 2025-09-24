@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ChartCard extends StatelessWidget {
   final String title;
+  final Widget? titleWidget; // <-- NOVO
   final Widget content;
   final bool showFilter;
   final String? filtroAtual;
@@ -10,6 +11,7 @@ class ChartCard extends StatelessWidget {
   const ChartCard({
     super.key,
     required this.title,
+    this.titleWidget, // <-- NOVO
     required this.content,
     this.showFilter = true,
     this.filtroAtual,
@@ -30,21 +32,29 @@ class ChartCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Text(title,
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
-                    if (showFilter && filtroAtual != null) ...[
-                      const SizedBox(width: 8),
-                      Text("($filtroAtual)",
+                titleWidget ??
+                    Row(
+                      children: [
+                        Text(
+                          title,
                           style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        if (showFilter && filtroAtual != null) ...[
+                          const SizedBox(width: 8),
+                          Text(
+                            "($filtroAtual)",
+                            style: const TextStyle(
                               fontSize: 13,
                               color: Colors.blueGrey,
-                              fontStyle: FontStyle.italic)),
-                    ]
-                  ],
-                ),
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ]
+                      ],
+                    ),
                 if (showFilter && onFiltroChange != null)
                   PopupMenuButton<String>(
                     icon: const Icon(Icons.filter_list, color: Colors.grey),

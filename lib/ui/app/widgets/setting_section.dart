@@ -1,3 +1,4 @@
+import 'package:desktop_nextmind/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SettingSection extends StatelessWidget {
@@ -16,7 +17,7 @@ class SettingSection extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSecondaryContainer,
+        color: AppColors.onErrorLight,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade300),
       ),

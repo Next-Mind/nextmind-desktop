@@ -219,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Expanded(
                           child: Row(
                             children: const [
-                              Expanded(child: ChartStatusUsuarios()),
+                              Expanded(child: ChartStatusUsuarios(showDashboardButton: true,)),
                               SizedBox(width: 16),
                               Expanded(child: ChartNovosUsuarios()),
                             ],

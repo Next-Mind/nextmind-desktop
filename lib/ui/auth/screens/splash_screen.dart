@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen>
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString("user");
 
-    await Future.delayed(const Duration(seconds: 5)); // tempo da splash reduzido
+    await Future.delayed(const Duration(seconds: 5));
 
     if (!mounted) return;
 
@@ -65,8 +65,6 @@ class _SplashScreenState extends State<SplashScreen>
         debugPrint("Erro ao carregar usuário da Splash: $e");
       }
     }
-
-    // Se não houver usuário → vai para login
     Navigator.pushReplacementNamed(context, AppRoutes.login);
   }
 
@@ -91,7 +89,7 @@ class _SplashScreenState extends State<SplashScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/images/logotipo_nextmind.png', // logo
+                  'assets/images/logotipo_nextmind.png',
                   width: 300,
                   height: 300,
                 ),

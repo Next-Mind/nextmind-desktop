@@ -58,10 +58,7 @@ class AppRoutes {
     },
 
     // ====== ROTAS DE CONFIGURAÇÃO ======
-    accountSettings: (context) {
-      final user = ModalRoute.of(context)?.settings.arguments as UserModel?;
-      return SettingsLayout(child: AccountSettings(user: user));
-    },
+    accountSettings: (context) => SettingsLayout(child: AccountSettings()),
 
     notificationSettings: (context) =>
         const SettingsLayout(child: NotificationSettings()),
