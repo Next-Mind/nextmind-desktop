@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:desktop_nextmind/ui/app/widgets/admin_card.dart';
 import 'package:desktop_nextmind/ui/app/widgets/psychologist_card.dart';
+import 'package:desktop_nextmind/ui/app/widgets/invite_admin_tab.dart';
 
 class ManagementScreen extends StatefulWidget {
   const ManagementScreen({super.key});
@@ -26,23 +26,6 @@ class _ManagementScreenState extends State<ManagementScreen>
     },
   ];
 
-  final List<Map<String, dynamic>> pendingAdmins = [
-    {
-      "name": "Carlos Lima",
-      "email": "carlos@email.com",
-      "role": "Administrador",
-      "createdAt": "2025-09-10",
-      "reviewed": false
-    },
-    {
-      "name": "Ana Paula",
-      "email": "ana@email.com",
-      "role": "Administrador",
-      "createdAt": "2025-09-15",
-      "reviewed": false
-    },
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -64,13 +47,14 @@ class _ManagementScreenState extends State<ManagementScreen>
           labelStyle: Theme.of(context).textTheme.bodyMedium,
           tabs: const [
             Tab(text: "Psicólogos Pendentes"),
-            Tab(text: "Admins Pendentes"),
+            Tab(text: "Convidar Admin"),
           ],
         ),
       ),
       body: TabBarView(
         controller: _tabController,
         children: [
+          // --- Aba Psicólogos Pendentes ---
           ListView(
             children: pendingPsychologists.map((p) {
               return PsychologistCard(
@@ -91,28 +75,9 @@ class _ManagementScreenState extends State<ManagementScreen>
               );
             }).toList(),
           ),
-          ListView(
-            children: pendingAdmins.map((a) {
-              return AdminCard(
-                name: a["name"],
-                email: a["email"],
-                role: a["role"],
-                createdAt: a["createdAt"],
-                reviewed: a["reviewed"],
-                onReview: () {
-                  setState(() {
-                    a["reviewed"] = true;
-                  });
-                },
-                onApprove: () {
-                  debugPrint("✅ Admin ${a["name"]} aprovado");
-                },
-                onReject: () {
-                  debugPrint("❌ Admin ${a["name"]} rejeitado");
-                },
-              );
-            }).toList(),
-          ),
+
+          // --- Aba Convidar Admin ---
+          const InviteAdminTab(),
         ],
       ),
     );

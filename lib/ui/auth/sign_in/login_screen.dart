@@ -197,30 +197,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-
-                    const SizedBox(height: 15),
-
-                    // Botão Criar Conta
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/cadastro');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryLight,
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        child: const Text(
-                          "CRIAR CONTA",    
-                          style: TextStyle(fontSize: 16,color: AppColors.onPrimaryLight),
-                        ),
-                      ),
-                    ),
-
                     const SizedBox(height: 30),
                   ],
                 ),

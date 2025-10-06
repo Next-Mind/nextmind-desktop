@@ -1,7 +1,7 @@
 import 'package:desktop_nextmind/core/theme/app_colors.dart';
 import 'package:desktop_nextmind/core/utils/appRoutes.dart';
 import 'package:desktop_nextmind/data/models/user_model.dart';
-import 'package:desktop_nextmind/ui/app/service/dashboard_service.dart';
+import 'package:desktop_nextmind/data/service/dashboard_service.dart';
 import 'package:desktop_nextmind/ui/app/widgets/chart_novos_usuarios.dart';
 import 'package:desktop_nextmind/ui/app/widgets/chart_status_usuarios.dart';
 import 'package:desktop_nextmind/ui/app/widgets/info_card.dart';
