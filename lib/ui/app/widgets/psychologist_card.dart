@@ -6,8 +6,8 @@ class PsychologistCard extends StatefulWidget {
   final String name;
   final String documentUrl;
   final bool read;
-  final VoidCallback onApprove;
-  final VoidCallback onReject;
+  final Future<void> Function()? onApprove;
+  final Future<void> Function()? onReject;
   final ValueChanged<bool> onReadChange;
 
   const PsychologistCard({
@@ -75,7 +75,7 @@ class _PsychologistCardState extends State<PsychologistCard> {
               children: [
                 ElevatedButton.icon(
                   icon: const Icon(Icons.picture_as_pdf),
-                  onPressed: _openPdf,
+                  onPressed: widget.documentUrl.isNotEmpty ? _openPdf : null,
                   label: const Text("Ver Documento"),
                 ),
                 Row(
@@ -83,18 +83,23 @@ class _PsychologistCardState extends State<PsychologistCard> {
                     ElevatedButton.icon(
                       icon: Icon(
                         Icons.check,
-                        color: widget.read
+                        color: (widget.read && widget.documentUrl.isNotEmpty)
                             ? Theme.of(context).colorScheme.primaryFixed
                             : Theme.of(context).disabledColor,
                       ),
-                      onPressed: widget.read ? widget.onApprove : null,
+                      onPressed: (widget.read && widget.documentUrl.isNotEmpty)
+                          ? () async {
+                              if (widget.onApprove != null)
+                                await widget.onApprove!();
+                            }
+                          : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryLight,
                       ),
                       label: Text(
                         "Aprovar",
                         style: TextStyle(
-                          color: widget.read
+                          color: (widget.read && widget.documentUrl.isNotEmpty)
                               ? Theme.of(context).colorScheme.primaryFixed
                               : Theme.of(context).disabledColor,
                         ),
@@ -104,11 +109,9 @@ class _PsychologistCardState extends State<PsychologistCard> {
                     ElevatedButton.icon(
                       icon: Icon(
                         Icons.close,
-                        color: widget.read
-                            ? Theme.of(context).colorScheme.primaryFixed
-                            : Theme.of(context).disabledColor,
+                        color: Theme.of(context).colorScheme.primaryFixed,
                       ),
-                      onPressed: widget.read ? widget.onReject : null,
+                      onPressed: widget.onReject != null ? () async { await widget.onReject!(); } : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
                             Theme.of(context).colorScheme.onErrorContainer,
@@ -116,9 +119,7 @@ class _PsychologistCardState extends State<PsychologistCard> {
                       label: Text(
                         "Rejeitar",
                         style: TextStyle(
-                          color: widget.read
-                              ? Theme.of(context).colorScheme.primaryFixed
-                              : Theme.of(context).disabledColor,
+                          color: Theme.of(context).colorScheme.primaryFixed,
                         ),
                       ),
                     ),

@@ -15,7 +15,7 @@ Future<void> main() async {
     minimumSize: Size(860, 560),
     center: true,
     backgroundColor: Colors.transparent,
-    // fullScreen: true, Opção de fullscreen, ativar apenas para apresentações.
+    fullScreen: true, 
   );
 
   windowManager.waitUntilReadyToShow(windowOptions, () async {

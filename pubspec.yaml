@@ -20,6 +20,7 @@ dependencies:
   fl_chart: 
   file_picker: 
   pdf: 
+  provider: 
 
 dev_dependencies:
   flutter_test:
