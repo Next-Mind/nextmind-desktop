@@ -11,8 +11,6 @@ class PdfReportGenerator {
     required String userType,
   }) async {
     final pdf = pw.Document();
-
-    // Carregar imagem pronta do header (PNG de alta resolução)
     final file = File('assets/images/header_pdf.png');
     if (!file.existsSync()) {
       throw Exception("Arquivo de header não encontrado!");
@@ -26,7 +24,7 @@ class PdfReportGenerator {
         footer: (context) => _buildFooter(context),
         build: (pw.Context context) => [
           pw.SizedBox(height: 20),
-          _buildTitle('RELATÓRIO DE USUÁRIOS - $userType'),
+          _buildTitle('RELATÓRIO DE USUÁRIOS - ${userType.toUpperCase()}'),
           pw.SizedBox(height: 24),
           _buildBody(users),
         ],
@@ -51,9 +49,6 @@ class PdfReportGenerator {
     }
   }
 
-  // ----------------------------
-  // CABEÇALHO COM IMAGEM PRONTA
-  // ----------------------------
   static pw.Widget _buildHeader(pw.ImageProvider headerImage) {
     return pw.Container(
       height: 100,
@@ -65,9 +60,6 @@ class PdfReportGenerator {
     );
   }
 
-  // ----------------------------
-  // TÍTULO
-  // ----------------------------
   static pw.Widget _buildTitle(String title) {
     return pw.Text(
       title,
@@ -79,9 +71,6 @@ class PdfReportGenerator {
     );
   }
 
-  // ----------------------------
-  // CORPO COM TABELA
-  // ----------------------------
   static pw.Widget _buildBody(List<Map<String, String>> users) {
     return pw.Container(
       padding: const pw.EdgeInsets.all(16),
@@ -103,9 +92,6 @@ class PdfReportGenerator {
     );
   }
 
-  // ----------------------------
-  // RODAPÉ FIXO (com número da página)
-  // ----------------------------
   static pw.Widget _buildFooter(pw.Context context) {
     return pw.Container(
       margin: const pw.EdgeInsets.only(top: 16),
@@ -118,7 +104,7 @@ class PdfReportGenerator {
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
         children: [
           pw.Text(
-            "@nextmind_tech",
+            "@nextmind.ctl",
             style: pw.TextStyle(
               fontSize: 10,
               color: PdfColor.fromInt(0xFF3EAF6C),
@@ -136,9 +122,6 @@ class PdfReportGenerator {
     );
   }
 
-  // ----------------------------
-  // CONFIGURAÇÕES GERAIS DA PÁGINA
-  // ----------------------------
   static pw.PageTheme _buildPageTheme() {
     return pw.PageTheme(
       margin: const pw.EdgeInsets.all(32),
