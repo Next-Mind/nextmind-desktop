@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/psychologist_model.dart';
 
 class PsychologistService {
-  final String baseUrl = "https://api-staging.nextmind.tech";
+  final String baseUrl = "https://api.nextmind.sbs";
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();

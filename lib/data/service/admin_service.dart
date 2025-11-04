@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AdminService {
-  static const String _baseUrl = "https://api-staging.nextmind.tech";
+  static const String _baseUrl = "https://api.nextmind.sbs";
 
   Future<Map<String, dynamic>> inviteAdmin(String email) async {
     final prefs = await SharedPreferences.getInstance();

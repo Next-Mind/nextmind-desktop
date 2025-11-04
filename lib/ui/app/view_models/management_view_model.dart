@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/models/psychologist_model.dart';
 
 class ManagementViewModel extends ChangeNotifier {
-  final String baseUrl = "https://api-staging.nextmind.tech";
+  final String baseUrl = "https://api.nextmind.sbs";
 
   List<PsychologistModel> pending = [];
   Map<String, bool> readStatus = {}; // controla leitura por id

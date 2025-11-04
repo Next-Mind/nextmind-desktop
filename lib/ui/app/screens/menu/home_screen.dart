@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final DashboardService _service =
-      DashboardService(baseUrl: "https://api-staging.nextmind.tech");
+      DashboardService(baseUrl: "https://api.nextmind.sbs");
 
   int totalAlunos = 0;
   int totalPsicologos = 0;
