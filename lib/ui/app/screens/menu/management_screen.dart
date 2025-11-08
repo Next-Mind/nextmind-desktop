@@ -137,15 +137,38 @@ class _ManagementScreenState extends State<ManagementScreen>
 
                           if (ok != true) return;
 
-                          try {
-                            // Se não existe documento, apenas rejeita sem acessar arquivos
-                            if (p.documents.isEmpty) {
-                              await vm.rejectPsychologist(p,
-                                  skipDocumentCheck: true);
-                            } else {
-                              await vm.rejectPsychologist(p);
-                            }
+                          // Pede o motivo da rejeição
+                          final controller = TextEditingController();
+                          final reason = await showDialog<String>(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: const Text("Motivo da rejeição"),
+                              content: TextField(
+                                controller: controller,
+                                decoration: const InputDecoration(
+                                  labelText: "Descreva o motivo",
+                                  border: OutlineInputBorder(),
+                                ),
+                                maxLines: 3,
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(ctx),
+                                  child: const Text("Cancelar"),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () =>
+                                      Navigator.pop(ctx, controller.text),
+                                  child: const Text("Enviar"),
+                                ),
+                              ],
+                            ),
+                          );
 
+                          if (reason == null || reason.isEmpty) return;
+
+                          try {
+                            await vm.rejectPsychologist(p, reason);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text(

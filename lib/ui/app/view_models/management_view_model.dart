@@ -31,6 +31,7 @@ class ManagementViewModel extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+        print(data);
         final List list = data['data'];
         pending = list.map((e) => PsychologistModel.fromJson(e)).toList();
         for (var p in pending) {
@@ -78,17 +79,8 @@ class ManagementViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> rejectPsychologist(PsychologistModel p,
-      {bool skipDocumentCheck = false}) async {
-    if (!skipDocumentCheck && p.documents.isEmpty)
-      throw Exception("Documento não encontrado");
-
-    if (p.documents.isEmpty) {
-      pending.removeWhere((e) => e.id == p.id);
-      notifyListeners();
-      return;
-    }
-
+  Future<void> rejectPsychologist(PsychologistModel p, String reason) async {
+    if (p.documents.isEmpty) throw Exception("Documento não encontrado");
     final docId = p.documents[0].id;
 
     final prefs = await SharedPreferences.getInstance();
@@ -98,16 +90,25 @@ class ManagementViewModel extends ChangeNotifier {
     final url =
         Uri.parse('$baseUrl/admin/psychologists/documents/$docId/repprove');
 
-    final response = await http.patch(url, headers: {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    });
+    final response = await http.patch(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({
+        "rejection_reason": reason,
+      }),
+    );
 
     if (response.statusCode == 200) {
       pending.removeWhere((e) => e.id == p.id);
       notifyListeners();
     } else {
-      throw Exception("Erro ao reprovar psicólogo");
+      throw Exception(
+        "Erro ao reprovar psicólogo: ${response.body}",
+      );
     }
   }
 }
