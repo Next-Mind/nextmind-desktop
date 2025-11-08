@@ -1,38 +1,87 @@
- import 'package:desktop_nextmind/ui/app/widgets/chard_card.dart';
+import 'package:desktop_nextmind/ui/app/view_models/audit_view_model.dart';
+import 'package:desktop_nextmind/ui/app/widgets/chard_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../data/models/audit_model.dart';
 
 class AtividadesRecentes extends StatelessWidget {
   const AtividadesRecentes({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChartCard(
-      title: "Atividades Recentes",
-      showFilter: false,
-      content: ListView(
-        children: const [
-          ListTile(
-            leading: Icon(Icons.person_add_alt_1, color: Colors.blue),
-            title: Text("Novo aluno cadastrado"),
-            subtitle: Text("há 15 minutos"),
-          ),
-          ListTile(
-            leading: Icon(Icons.check_circle_outline, color: Colors.green),
-            title: Text("Psicólogo aprovou atendimento"),
-            subtitle: Text("há 1 hora"),
-          ),
-          ListTile(
-            leading: Icon(Icons.flag_outlined, color: Colors.orange),
-            title: Text("Usuário reportado"),
-            subtitle: Text("há 3 horas"),
-          ),
-          ListTile(
-            leading: Icon(Icons.block, color: Colors.red),
-            title: Text("Conta banida"),
-            subtitle: Text("há 6 horas"),
-          ),
-        ],
+    return ChangeNotifierProvider(
+      create: (_) => AuditViewModel()..loadAudits(),
+      child: Consumer<AuditViewModel>(
+        builder: (context, viewModel, _) {
+          if (viewModel.isLoading) {
+            return const ChartCard(
+              title: "Atividades Recentes",
+              showFilter: false,
+              content: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          if (viewModel.error != null) {
+            return ChartCard(
+              title: "Atividades Recentes",
+              showFilter: false,
+              content: Center(child: Text("Erro: ${viewModel.error}")),
+            );
+          }
+
+          final List<Audit> audits = viewModel.audits;
+
+          if (audits.isEmpty) {
+            return const ChartCard(
+              title: "Atividades Recentes",
+              showFilter: false,
+              content: Center(child: Text("Nenhuma atividade recente.")),
+            );
+          }
+
+          return ChartCard(
+            title: "Atividades Recentes",
+            showFilter: false,
+            content: ListView.separated(
+              itemCount: audits.length,
+              separatorBuilder: (_, __) => const Divider(height: 1),
+              itemBuilder: (context, index) {
+                final audit = audits[index];
+
+                return ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: audit.eventColor.withOpacity(0.15),
+                    child: Icon(audit.eventIcon, color: audit.eventColor),
+                  ),
+                  title: Text(
+                    audit.readableMessage,
+                    style: const TextStyle(fontWeight: FontWeight.w500),
+                  ),
+                  subtitle: Text(
+                    audit.createdAt != null
+                        ? _formatDate(audit.createdAt!)
+                        : "Data desconhecida",
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                );
+              },
+            ),
+          );
+        },
       ),
     );
+  }
+
+  String _formatDate(String isoString) {
+    try {
+      final date = DateTime.parse(isoString).toLocal();
+      return "${date.day.toString().padLeft(2, '0')}/"
+          "${date.month.toString().padLeft(2, '0')}/"
+          "${date.year} às "
+          "${date.hour.toString().padLeft(2, '0')}:"
+          "${date.minute.toString().padLeft(2, '0')}";
+    } catch (_) {
+      return isoString;
+    }
   }
 }
