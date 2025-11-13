@@ -10,6 +10,8 @@ class DocumentModel {
   final String createdAt;
   final String temporaryUrl;
 
+  static const _sentinel = Object();
+
   DocumentModel({
     required this.id,
     required this.type,
@@ -47,5 +49,33 @@ class DocumentModel {
       'created_at': createdAt,
       'temporary_url': temporaryUrl,
     };
+  }
+
+  DocumentModel copyWith({
+    String? id,
+    String? type,
+    String? status,
+    Object? reviewedBy = _sentinel,
+    Object? reviewedAt = _sentinel,
+    Object? rejectionReason = _sentinel,
+    String? createdAt,
+    String? temporaryUrl,
+  }) {
+    return DocumentModel(
+      id: id ?? this.id,
+      type: type ?? this.type,
+      status: status ?? this.status,
+      reviewedBy: reviewedBy == _sentinel
+          ? this.reviewedBy
+          : reviewedBy as ReviewedByModel?,
+      reviewedAt: reviewedAt == _sentinel
+          ? this.reviewedAt
+          : reviewedAt as String?,
+      rejectionReason: rejectionReason == _sentinel
+          ? this.rejectionReason
+          : rejectionReason as String?,
+      createdAt: createdAt ?? this.createdAt,
+      temporaryUrl: temporaryUrl ?? this.temporaryUrl,
+    );
   }
 }

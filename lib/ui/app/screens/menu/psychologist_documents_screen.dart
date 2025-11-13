@@ -22,6 +22,13 @@ class PsychologistDocumentsScreen extends StatefulWidget {
 class _PsychologistDocumentsScreenState
     extends State<PsychologistDocumentsScreen> {
   final Map<String, bool> _readDocs = {};
+  late List<DocumentModel> _documents;
+
+  @override
+  void initState() {
+    super.initState();
+    _documents = List<DocumentModel>.from(widget.documents);
+  }
 
   String _getTypeName(String type) {
     switch (type) {
@@ -54,20 +61,45 @@ class _PsychologistDocumentsScreenState
   }
 
   Future<void> _approveDocument(String id) async {
-    final url = Uri.parse(
-        'https://api.nextmind.sbs/admin/psychologists/documents/$id/approve');
-    final response = await http.patch(url, headers: {
-      'Authorization': 'Bearer ${widget.token}',
-      'Accept': 'application/json',
+    final index = _documents.indexWhere((doc) => doc.id == id);
+    if (index == -1) return;
+
+    final previousDoc = _documents[index];
+    final updatedDoc = previousDoc.copyWith(
+      status: 'approved',
+      rejectionReason: null,
+    );
+
+    setState(() {
+      _documents[index] = updatedDoc;
     });
 
-    if (response.statusCode == 200) {
+    final url = Uri.parse(
+        'https://api.nextmind.sbs/admin/psychologists/documents/$id/approve');
+    try {
+      final response = await http.patch(url, headers: {
+        'Authorization': 'Bearer ${widget.token}',
+        'Accept': 'application/json',
+      });
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("✅ Documento aprovado com sucesso")),
+        );
+      } else {
+        setState(() {
+          _documents[index] = previousDoc;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Erro ao aprovar documento: ${response.body}")),
+        );
+      }
+    } catch (error) {
+      setState(() {
+        _documents[index] = previousDoc;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("✅ Documento aprovado com sucesso")),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Erro ao aprovar documento: ${response.body}")),
+        SnackBar(content: Text('Erro ao aprovar documento: $error')),
       );
     }
   }
@@ -101,25 +133,50 @@ class _PsychologistDocumentsScreenState
 
     if (reason == null || reason.isEmpty) return;
 
-    final url = Uri.parse(
-        'https://api.nextmind.sbs/admin/psychologists/documents/$id/repprove');
-    final response = await http.patch(
-      url,
-      headers: {
-        'Authorization': 'Bearer ${widget.token}',
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({'rejection_reason': reason}),
+    final index = _documents.indexWhere((doc) => doc.id == id);
+    if (index == -1) return;
+
+    final previousDoc = _documents[index];
+    final updatedDoc = previousDoc.copyWith(
+      status: 'repproved',
+      rejectionReason: reason,
     );
 
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("❌ Documento reprovado com sucesso")),
+    setState(() {
+      _documents[index] = updatedDoc;
+    });
+
+    final url = Uri.parse(
+        'https://api.nextmind.sbs/admin/psychologists/documents/$id/repprove');
+    try {
+      final response = await http.patch(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${widget.token}',
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'rejection_reason': reason}),
       );
-    } else {
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("❌ Documento reprovado com sucesso")),
+        );
+      } else {
+        setState(() {
+          _documents[index] = previousDoc;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Erro ao reprovar: ${response.body}")),
+        );
+      }
+    } catch (error) {
+      setState(() {
+        _documents[index] = previousDoc;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Erro ao reprovar: ${response.body}")),
+        SnackBar(content: Text('Erro ao reprovar: $error')),
       );
     }
   }
@@ -130,9 +187,9 @@ class _PsychologistDocumentsScreenState
       appBar: AppBar(title: const Text("Documentos do Psicólogo")),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
-        itemCount: widget.documents.length,
+        itemCount: _documents.length,
         itemBuilder: (context, index) {
-          final doc = widget.documents[index];
+          final doc = _documents[index];
           final isRead = _readDocs[doc.id] ?? false;
 
           return Card(
@@ -175,6 +232,16 @@ class _PsychologistDocumentsScreenState
                                 fontSize: 14,
                               ),
                             ),
+                            if ((doc.rejectionReason ?? '').isNotEmpty) ...[
+                              const SizedBox(height: 4),
+                              Text(
+                                'Motivo: ${doc.rejectionReason}',
+                                style: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
                             const SizedBox(height: 8),
                             Align(
                               alignment: Alignment.centerLeft,
@@ -200,8 +267,9 @@ class _PsychologistDocumentsScreenState
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           ElevatedButton.icon(
-                            onPressed:
-                                isRead ? () => _approveDocument(doc.id) : null,
+                            onPressed: isRead
+                                    ? () => _approveDocument(doc.id)
+                                    : null,
                             icon: const Icon(Icons.check, color: Colors.white,),
                             label: const Text("Aprovar", style: TextStyle(color: Colors.white),),
                             style: ElevatedButton.styleFrom(
