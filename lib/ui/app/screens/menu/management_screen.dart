@@ -1,5 +1,7 @@
+import 'package:desktop_nextmind/ui/app/screens/menu/psychologist_documents_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:desktop_nextmind/ui/app/view_models/management_view_model.dart';
 import 'package:desktop_nextmind/ui/app/widgets/psychologist_card.dart';
 import 'package:desktop_nextmind/ui/app/widgets/invite_admin_tab.dart';
@@ -41,8 +43,10 @@ class _ManagementScreenState extends State<ManagementScreen>
             backgroundColor: Theme.of(context).colorScheme.primaryContainer,
             appBar: AppBar(
               centerTitle: true,
-              title: Text("Gerenciamento",
-                  style: Theme.of(context).textTheme.titleLarge),
+              title: Text(
+                "Gerenciamento",
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
               bottom: TabBar(
                 controller: _tabController,
                 labelStyle: Theme.of(context).textTheme.bodyMedium,
@@ -59,129 +63,78 @@ class _ManagementScreenState extends State<ManagementScreen>
                   const Center(child: CircularProgressIndicator())
                 else if (vm.error != null)
                   Center(
-                      child: Text(vm.error!,
-                          style: const TextStyle(color: Colors.red)))
+                    child: Text(
+                      vm.error!,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  )
                 else if (vm.pending.isEmpty)
                   const Center(child: Text("Nenhum psicólogo pendente."))
                 else
-                  ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: vm.pending.length,
-                    itemBuilder: (context, index) {
-                      final p = vm.pending[index];
-                      final docUrl = p.documents.isNotEmpty
-                          ? p.documents[0].temporaryUrl
-                          : null;
+                  Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(16),
+                          itemCount: vm.pending.length,
+                          itemBuilder: (context, index) {
+                            final p = vm.pending[index];
+                            final docUrl = p.documents.isNotEmpty
+                                ? (p.documents[0].temporaryUrl ?? '')
+                                : '';
+                            final docId = p.documents.isNotEmpty
+                                ? (p.documents[0].id is int
+                                    ? p.documents[0].id as int
+                                    : int.tryParse(p.documents[0].id.toString()) ?? 0)
+                                : 0;
+                            final isRead = vm.isRead(p.id);
 
-                      final isRead = vm.isRead(p.id);
+                            return PsychologistCard(
+                              name: p.psychologist,
+                              documentId: docId,
+                              documentUrl: docUrl,
+                              read: isRead,
+                              onReadChange: (value) =>
+                                  vm.markAsRead(p.id, value),
+                              onTap: () async {
+                                if (p.documents.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text("Nenhum documento disponível"),
+                                    ),
+                                  );
+                                  return;
+                                }
 
-                      return PsychologistCard(
-                        name: p.psychologist,
-                        documentUrl: docUrl ?? '',
-                        read: isRead,
-                        onReadChange: (value) => vm.markAsRead(p.id, value),
-                        onApprove: isRead
-                            ? () async {
-                                final ok = await showDialog<bool>(
-                                  context: context,
-                                  builder: (ctx) => AlertDialog(
-                                    title: const Text("Aprovar psicólogo"),
-                                    content: Text(
-                                        "Deseja aprovar ${p.psychologist}?"),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(ctx, false),
-                                          child: const Text("Cancelar")),
-                                      ElevatedButton(
-                                          onPressed: () =>
-                                              Navigator.pop(ctx, true),
-                                          child: const Text("Confirmar")),
-                                    ],
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                final token = prefs.getString("token");
+
+                                if (token == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text("Token não encontrado")),
+                                  );
+                                  return;
+                                }
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        PsychologistDocumentsScreen(
+                                      documents: p.documents,
+                                      token: token,
+                                    ),
                                   ),
                                 );
-                                if (ok == true) {
-                                  try {
-                                    await vm.approvePsychologist(p);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              "✅ Psicólogo aprovado com sucesso")),
-                                    );
-                                  } catch (e) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text("Erro ao aprovar: $e")),
-                                    );
-                                  }
-                                }
-                              }
-                            : null,
-                        onReject: () async {
-                          final ok = await showDialog<bool>(
-                            context: context,
-                            builder: (ctx) => AlertDialog(
-                              title: const Text("Rejeitar psicólogo"),
-                              content:
-                                  Text("Deseja rejeitar ${p.psychologist}?"),
-                              actions: [
-                                TextButton(
-                                    onPressed: () => Navigator.pop(ctx, false),
-                                    child: const Text("Cancelar")),
-                                ElevatedButton(
-                                    onPressed: () => Navigator.pop(ctx, true),
-                                    child: const Text("Confirmar")),
-                              ],
-                            ),
-                          );
-
-                          if (ok != true) return;
-
-                          // Pede o motivo da rejeição
-                          final controller = TextEditingController();
-                          final reason = await showDialog<String>(
-                            context: context,
-                            builder: (ctx) => AlertDialog(
-                              title: const Text("Motivo da rejeição"),
-                              content: TextField(
-                                controller: controller,
-                                decoration: const InputDecoration(
-                                  labelText: "Descreva o motivo",
-                                  border: OutlineInputBorder(),
-                                ),
-                                maxLines: 3,
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(ctx),
-                                  child: const Text("Cancelar"),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () =>
-                                      Navigator.pop(ctx, controller.text),
-                                  child: const Text("Enviar"),
-                                ),
-                              ],
-                            ),
-                          );
-
-                          if (reason == null || reason.isEmpty) return;
-
-                          try {
-                            await vm.rejectPsychologist(p, reason);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text(
-                                      "❌ Psicólogo reprovado com sucesso")),
+                              },
                             );
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Erro ao reprovar: $e")),
-                            );
-                          }
-                        },
-                      );
-                    },
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 const InviteAdminTab(),
               ],

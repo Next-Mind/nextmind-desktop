@@ -1,8 +1,10 @@
+import 'package:desktop_nextmind/data/models/reviewed_by_model.dart';
+
 class DocumentModel {
   final String id;
   final String type;
   final String status;
-  final String? reviewedBy;
+  final ReviewedByModel? reviewedBy;
   final String? reviewedAt;
   final String? rejectionReason;
   final String createdAt;
@@ -24,7 +26,9 @@ class DocumentModel {
       id: json['id'] ?? '',
       type: json['type'] ?? '',
       status: json['status'] ?? '',
-      reviewedBy: json['reviewed_by'],
+      reviewedBy: json['reviewed_by'] != null
+          ? ReviewedByModel.fromJson(json['reviewed_by'])
+          : null,
       reviewedAt: json['reviewed_at'],
       rejectionReason: json['rejection_reason'],
       createdAt: json['created_at'] ?? '',

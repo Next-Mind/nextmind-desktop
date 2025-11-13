@@ -7,7 +7,7 @@ class PsychologistModel {
   final String speciality;
   final String bio;
   final String status;
-  final String? verifiedAt;
+  // final String? verifiedAt;
   final List<DocumentModel> documents;
 
   PsychologistModel({
@@ -17,7 +17,7 @@ class PsychologistModel {
     required this.speciality,
     required this.bio,
     required this.status,
-    this.verifiedAt,
+    // this.verifiedAt,
     required this.documents,
   });
 
@@ -29,11 +29,12 @@ class PsychologistModel {
       speciality: json['speciality'] ?? '',
       bio: json['bio'] ?? '',
       status: json['status'] ?? '',
-      verifiedAt: json['verified_at'],
-      documents: (json['documents'] as List<dynamic>?)
-              ?.map((d) => DocumentModel.fromJson(d as Map<String, dynamic>))
-              .toList() ??
-          [],
+      // verifiedAt: json['verified_at'],
+      documents: json['documents'] is List
+          ? (json['documents'] as List)
+              .map((d) => DocumentModel.fromJson(d))
+              .toList()
+          : [],
     );
   }
 
@@ -45,7 +46,7 @@ class PsychologistModel {
       'speciality': speciality,
       'bio': bio,
       'status': status,
-      'verified_at': verifiedAt,
+      // 'verified_at': verifiedAt,
       'documents': documents.map((d) => d.toJson()).toList(),
     };
   }
