@@ -41,11 +41,33 @@ class DocumentModel {
       'id': id,
       'type': type,
       'status': status,
-      'reviewed_by': reviewedBy,
+      'reviewed_by': reviewedBy?.toJson(),
       'reviewed_at': reviewedAt,
       'rejection_reason': rejectionReason,
       'created_at': createdAt,
       'temporary_url': temporaryUrl,
     };
+  }
+
+  DocumentModel copyWith({
+    String? id,
+    String? type,
+    String? status,
+    ReviewedByModel? reviewedBy,
+    String? reviewedAt,
+    String? rejectionReason,
+    String? createdAt,
+    String? temporaryUrl,
+  }) {
+    return DocumentModel(
+      id: id ?? this.id,
+      type: type ?? this.type,
+      status: status ?? this.status,
+      reviewedBy: reviewedBy ?? this.reviewedBy,
+      reviewedAt: reviewedAt ?? this.reviewedAt,
+      rejectionReason: rejectionReason ?? this.rejectionReason,
+      createdAt: createdAt ?? this.createdAt,
+      temporaryUrl: temporaryUrl ?? this.temporaryUrl,
+    );
   }
 }
