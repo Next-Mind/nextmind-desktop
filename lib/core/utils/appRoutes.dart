@@ -18,11 +18,9 @@ import 'package:desktop_nextmind/ui/app/screens/menu/management_screen.dart';
 import 'package:desktop_nextmind/ui/app/screens/menu/reported_screen.dart';
 import 'package:desktop_nextmind/ui/app/screens/menu/support_screen.dart';
 import 'package:desktop_nextmind/ui/auth/sign_in/login_screen.dart';
-import 'package:desktop_nextmind/ui/auth/sign_up/cadastro_screens.dart';
 
 class AppRoutes {
   static const String splash = '/splash';
-  static const String cadastro = '/cadastro';
   static const String login = '/login';
   static const String home = '/home';
   static const String dashboard = '/dashboard';
@@ -39,7 +37,6 @@ class AppRoutes {
 
   static Map<String, WidgetBuilder> routes = {
     splash: (context) => const SplashScreen(),
-    cadastro: (context) => const CadastroScreen(),
     login: (context) => const LoginScreen(),
 
     // ====== ROTAS DO MENU ======

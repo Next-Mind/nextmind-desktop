@@ -1,7 +1,7 @@
 import 'package:desktop_nextmind/core/theme/app_colors.dart';
 import 'package:desktop_nextmind/core/utils/appRoutes.dart';
 import 'package:desktop_nextmind/data/models/user_model.dart';
-import 'package:desktop_nextmind/ui/app/service/dashboard_service.dart';
+import 'package:desktop_nextmind/data/service/dashboard_service.dart';
 import 'package:desktop_nextmind/ui/app/widgets/chart_novos_usuarios.dart';
 import 'package:desktop_nextmind/ui/app/widgets/chart_status_usuarios.dart';
 import 'package:desktop_nextmind/ui/app/widgets/info_card.dart';
@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final DashboardService _service =
-      DashboardService(baseUrl: "https://api-staging.nextmind.tech");
+      DashboardService(baseUrl: "https://api.nextmind.sbs");
 
   int totalAlunos = 0;
   int totalPsicologos = 0;

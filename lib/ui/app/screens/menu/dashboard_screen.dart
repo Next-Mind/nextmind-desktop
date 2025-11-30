@@ -1,4 +1,4 @@
-import 'package:desktop_nextmind/ui/app/service/dashboard_service.dart';
+import 'package:desktop_nextmind/data/service/dashboard_service.dart';
 import 'package:desktop_nextmind/ui/app/widgets/atividades_recentes.dart';
 import 'package:desktop_nextmind/ui/app/widgets/chart_chamadas.dart';
 import 'package:desktop_nextmind/ui/app/widgets/chart_novos_usuarios.dart';
@@ -15,7 +15,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final DashboardService _service =
-      DashboardService(baseUrl: "https://api-staging.nextmind.tech");
+      DashboardService(baseUrl: "https://api.nextmind.sbs");
 
   int totalAlunos = 0;
   int totalPsicologos = 0;

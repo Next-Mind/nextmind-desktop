@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import
 
 import 'dart:io';
+import 'package:desktop_nextmind/core/utils/pdf/pdf_report_generator.dart';
 import 'package:desktop_nextmind/ui/app/widgets/filters_bar.dart';
 import 'package:desktop_nextmind/ui/app/widgets/stat_card.dart';
 import 'package:desktop_nextmind/ui/app/widgets/stats_row.dart';
@@ -32,57 +33,24 @@ class _ExportableScreenState extends State<ExportableScreen> {
   // FILTROS
   List<Map<String, String>> get filteredUsers {
     return allUsers.where((user) {
-      final roleMatch = selectedUserType == "Todos" || user["role"] == selectedUserType;
-      final statusMatch = selectedStatus == "Todos" || user["status"] == selectedStatus;
+      final roleMatch =
+          selectedUserType == "Todos" || user["role"] == selectedUserType;
+      final statusMatch =
+          selectedStatus == "Todos" || user["status"] == selectedStatus;
       return roleMatch && statusMatch;
     }).toList();
   }
 
-  int get totalBanidos => filteredUsers.where((u) => u["status"] == "Banido").length;
+  int get totalBanidos =>
+      filteredUsers.where((u) => u["status"] == "Banido").length;
   int get totalUsers => filteredUsers.length;
 
-  // EXPORT PDF
   Future<void> exportPDF() async {
-    final pdf = pw.Document();
-
-    pdf.addPage(
-      pw.Page(
-        build: (pw.Context context) {
-          return pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Text(
-                "Relatório de Usuários - $selectedUserType",
-                style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
-              ),
-              pw.SizedBox(height: 12),
-              pw.Table.fromTextArray(
-                headers: ["Nome", "Cargo", "Status"],
-                data: filteredUsers.map((e) => [e["name"], e["role"], e["status"]]).toList(),
-              ),
-            ],
-          );
-        },
-      ),
+    await PdfReportGenerator.exportUserReport(
+      context: context,
+      users: filteredUsers,
+      userType: selectedUserType,
     );
-
-    String? path = await FilePicker.platform.saveFile(
-      dialogTitle: 'Salvar PDF',
-      fileName: 'usuarios_filtrados.pdf',
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
-    );
-
-    if (path != null) {
-      final file = File(path);
-      await file.writeAsBytes(await pdf.save());
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("PDF exportado com sucesso!")),
-        );
-      }
-    }
   }
 
   @override
@@ -100,8 +68,10 @@ class _ExportableScreenState extends State<ExportableScreen> {
                 theme: theme,
                 selectedUserType: selectedUserType,
                 selectedStatus: selectedStatus,
-                onUserTypeChanged: (value) => setState(() => selectedUserType = value),
-                onStatusChanged: (value) => setState(() => selectedStatus = value),
+                onUserTypeChanged: (value) =>
+                    setState(() => selectedUserType = value),
+                onStatusChanged: (value) =>
+                    setState(() => selectedStatus = value),
                 onExportPressed: filteredUsers.isNotEmpty ? exportPDF : null,
               ),
               const SizedBox(height: 16),
